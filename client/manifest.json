@@ -1,0 +1,34 @@
+{
+    "manifest_version": 3,
+    "name": "SilentPass",
+    "version": "1.0.0",
+    "description": "Your quiet companion for fast, intelligent answers during quizzes, exams, or tough study sessions. Quick. Smart. Silent.",
+    "permissions": [
+        "storage",
+        "activeTab",
+        "scripting",
+        "windows"
+    ],
+
+    "background": {
+        "service_worker": "background.js"
+    },
+
+    "host_permissions": ["<all_urls>"],
+
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["src/content.js"],
+            "run_at": "document_end",
+            "all_frames": false
+        }
+    ],
+
+    "web_accessible_resources": [
+        {
+            "resources": ["src/image.png"],
+            "matches": ["<all_urls>"]
+        }
+    ]
+}
