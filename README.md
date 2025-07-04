@@ -4,6 +4,24 @@
 
 ---
 
+## 📦 Initial Setup (API Key)
+
+Before running the project, make sure to configure your Gemini API key.
+
+1. Go to the `server` folder:
+
+   ```bash
+   cd server
+   ```
+2. Create a `.env` file inside the `server` folder.
+3. Add your Gemini API key like this:
+
+   ```env
+   GEMINI_API_KEY=your-own-google-gemini-api-key-model-2.5-flash
+   ```
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -125,7 +143,6 @@ MIT License — free to use, modify, and distribute with credit.
 ---
 
 > Made with 🔥 by Mohan Gupta — built to assist coding preparation silently and smartly. 🧠
-
 
 ## 🧭 How to Use
 
