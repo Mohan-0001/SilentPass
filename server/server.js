@@ -291,17 +291,25 @@ async function generateWithRetry(prompt, retries = 3, delay = 2000) {
 }
 
 app.post('/api/gemini', async (req, res) => {
-  const { prompt } = req.body;
+  const { messages } = req.body;
 
-  if (!prompt) {
-    return res.status(400).json({ error: 'Missing prompt in the request body' });
+  if (!messages || !Array.isArray(messages)) {
+    return res.status(400).json({ error: 'Missing or invalid messages array in the request body' });
   }
 
   try {
-    const response = await generateWithRetry(prompt);
+    const contents = messages.map(msg => ({
+      role: msg.role,
+      parts: [{ text: msg.content }]
+    }));
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.0-flash',
+      contents
+    });
 
     if (response.candidates && response.candidates.length > 0) {
-      const generatedText = response.candidates[0].content;
+      const generatedText = response.candidates[0].content?.parts?.[0]?.text || response.candidates[0].content;
       res.json({ text: generatedText });
     } else {
       res.status(500).json({ error: 'No candidates found in the response' });
@@ -313,6 +321,7 @@ app.post('/api/gemini', async (req, res) => {
     });
   }
 });
+
 
 app.listen(PORT, () => {
   console.log(`🟢 Gemini backend running at http://localhost:${PORT}`);

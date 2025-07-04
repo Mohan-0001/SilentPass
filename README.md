@@ -1,6 +1,6 @@
-# SilentPass Chrome Extension
+# 🔐 SilentPass Chrome Extension
 
-SilentPass is a Chrome extension that provides a sleek, AI-powered assistant that silently helps you solve programming problems during exams, quizzes, and practice sessions. With features like a draggable chat UI, persistent chat history, smart cropping, and a popup window for searching or loading questions, it's your silent coding companion.
+**SilentPass** is an AI-powered Chrome extension built to quietly assist with solving coding problems during exams, practice sessions, or coding tests. It provides a sleek chat interface powered by Gemini, with text selection, crop-and-copy, and draggable UI features.
 
 ---
 
@@ -9,80 +9,123 @@ SilentPass is a Chrome extension that provides a sleek, AI-powered assistant tha
 ```
 SilentPass/
 ├── src/
-│   ├── content.js          # Main logic for UI, chat, cropping, and interaction
-│   ├── image.png           # Send button icon
-├── background.js           # Background service worker handling window creation
-├── manifest.json           # Chrome extension configuration
-├── README.md               # Documentation (this file)
+│   ├── content.js          # Main frontend logic: chat UI, AI calls, cropping
+│   ├── image.png           # Optional icon for send button
+├── background.js           # Chrome service worker for popup handling
+├── manifest.json           # Extension configuration file
+├── README.md               # This file
 ```
 
 ---
 
 ## 🚀 Features
 
-* 🤖 Floating "Ask AI" button that toggles a draggable chatbox
-* 🧠 AI assistant powered by Gemini API (via local backend)
-* 💬 Persistent chat history using `localStorage`
-* ✂️ Crop text from any webpage and send to AI instantly
-* 🧭 Button to open a popup browser window for browsing or loading question sources
-* 🧹 Close button that also clears history
+* 🤖 Floating "SilentPass" button when selecting text
+* 💬 Draggable chat UI with persistent history
+* 🧠 Gemini AI integration via backend server
+* ✂️ Smart crop-and-copy full-page OCR-like feature
+* 📤 Auto-paste selected/cropped text into chat input
+* ➕ Open a browser popup window on demand
+* ❌ Close and auto-clear chat
+* 📋 Copy AI answers with one click
 
 ---
 
-## 🧩 Installation Guide
+## ⚙️ How to Use
 
-### 🔧 1. Clone the Repository
+### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/SilentPass.git
+git clone https://github.com/Mohan-0001/SilentPass.git
 cd SilentPass
 ```
 
-### 🌐 2. Load as Chrome Extension
+### Step 2: Set Up the Installation
+
+1. Navigate to the client folder:
+
+   ```bash
+   cd client
+   npm install
+   ```
+
+   *This will install all client-side dependencies.*
+
+2. Navigate to the server folder:
+
+   ```bash
+   cd ..
+   cd server
+   npm install
+   ```
+
+   *This will install backend dependencies.*
+
+### Step 3: Run the Setup
+
+1. Start the client in development mode:
+
+   ```bash
+   cd client
+   npm run dev
+   ```
+
+2. In a new terminal, start the server:
+
+   ```bash
+   cd server
+   node server.js
+   ```
+
+3. Go to `SilentPass/client/dist/manifest.json`
+
+   * If the `service_worker` path is `service-worker-loader.js`, change it to:
+
+     ```json
+     "service_worker": "background.js"
+     ```
+   * If it's already `background.js`, no action needed.
+
+### Step 4: Load the Extension into Chrome
 
 1. Open Chrome and go to `chrome://extensions`
-2. Enable **Developer Mode** (top-right corner)
-3. Click **"Load Unpacked"**
-4. Select the project root folder (e.g., `SilentPass/`)
+2. Enable **Developer Mode** (toggle in the top right)
+3. Click **Load Unpacked**
+4. Select the `dist` folder inside `SilentPass/client`
 
-You're all set! You’ll see a small 🤖 button on the right side of pages.
+Done! You’ll now see the 🤖 button when you select text on a webpage.
+
+---
+
+## 💡 Usage Flow
+
+* Select any question or text on a webpage
+* "🤖 SilentPass" button appears → Click it
+* Chat UI opens with pre-filled text
+* Click ➤ to get an AI answer
+* Use ✂️ to crop and extract full-page visible text
+* Use 📋 to copy answers or 📁 to open a helper window
+* Close UI with ✖ and optionally reset history
 
 ---
 
-## 🧠 Backend Setup (Gemini API)
+## 🎹 Keyboard Shortcuts
 
-Your `content.js` communicates with a backend on `http://localhost:5000/api/gemini`. To get this working:
-
-### 🔁 1. Create a Node/Express Backend (sample):
-
-```js
-// server.js
-const express = require('express');
-const cors = require('cors');
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-app.post('/api/gemini', async (req, res) => {
-  const { prompt } = req.body;
-  // Use Google GenAI SDK or Gemini API here to respond
-  const result = await yourGeminiFunction(prompt);
-  res.json({ text: result });
-});
-
-app.listen(5000, () => console.log("Backend running on port 5000"));
-```
-
-### 🧪 2. Run it
-
-```bash
-npm install express cors
-node server.js
-```
-
-Ensure this is running before using the AI features in the extension.
+* `Ctrl + B` → Open Chat UI manually
+* `Ctrl + A` → Clear chat history
+* `Ctrl + M` → Minimize/Hide UI
+* `Ctrl + Arrow Keys` → Move chat window
 
 ---
+
+## 📜 License
+
+MIT License — free to use, modify, and distribute with credit.
+
+---
+
+> Made with 🔥 by Mohan Gupta — built to assist coding preparation silently and smartly. 🧠
+
 
 ## 🧭 How to Use
 
@@ -98,7 +141,7 @@ Ensure this is running before using the AI features in the extension.
 
 ### 🔸 content.js (Frontend Logic)
 
-* `AskAIButton()` – injects the floating button
+* using keyboard keys the ui part is shown 
 * `createChatUI()` – builds the draggable chat interface
 * `appendMessage()` – appends messages and persists to `localStorage`
 * `generateAIResponse()` – sends the input to your backend (Gemini API)
@@ -195,7 +238,7 @@ git push origin feature/your-feature-name
 Found a bug? Want to request a feature?
 
 * Open an issue on GitHub
-* Or contact: \[[your-email@example.com](mailto:your-email@example.com)]
+* Or contact: \[[mohangupta110706@gmail.com]]
 
 ---
 
@@ -206,3 +249,7 @@ MIT License. Do whatever you want but don’t forget to give credit ❤️
 ---
 
 > Made with 🔥 by Mohan Gupta for efficient and ethical exam preparation 🧠
+
+> Using this you can pass your exam if it prohibite screen-optimization, some special keys like   ctrl+c/v.
+
+> the UI part is overflow on the webite so its easy to drag and drop 
